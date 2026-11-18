@@ -16,7 +16,7 @@
 * **Frontend & Core Logic**: HTML, JavaScript (Client-side execution and local state management)
 * **License**: AGPL-3.0
 
-2. Open index.html in a modern web browser or deploy the directory to a local web server instance.
+1. Open index.html in a modern web browser or deploy the directory to a local web server instance.
 Contributing
 Contributions, architectural proposals, and bug reports are welcome. Please submit pull requests or open issues via the GitHub repository interface.
 License
