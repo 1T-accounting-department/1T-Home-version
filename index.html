@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1C3356">
+<link rel="manifest" href="manifest.json"><link rel="icon" href="icon.png"><link rel="apple-touch-icon" href="icon.png">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<title>1T</title>
+<style>
+:root{--bg:#DCE3EC;--panel:#F3F5F8;--card:#fff;--ink:#1A2733;--mut:#5B6B7A;--line:#AFBCCB;--acc:#2456A6;--acc2:#1C3F80;--r:#A3281E;--ok:#2B6B3E;--head:#1C3356;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#121820;--panel:#19212C;--card:#1E2733;--ink:#E4EAF1;--mut:#8C9BAC;--line:#34404E;--acc:#5C8FD6;--acc2:#4A7AC0;--head:#101826;color-scheme:dark}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.35 "Segoe UI",Tahoma,Arial,system-ui,sans-serif;padding-top:env(safe-area-inset-top,0px)}
+button,.in{transition:background-color .15s,border-color .15s,opacity .15s,transform .08s}
+button:active{transform:scale(.96)}
+.card{transition:background-color .15s}
+.card:active{background:var(--panel)}
+#app{opacity:1;transition:opacity .14s ease}
+#app.f{opacity:0}
+header{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--head);color:#fff;border-bottom:1px solid var(--acc2)}
+header img{width:26px;height:26px;border-radius:3px}header b{font-size:15px;font-weight:600;letter-spacing:.3px}header span{color:#9FB2CC;font-size:11px;margin-left:auto}
+main{padding:0 0 180px;max-width:640px;margin:auto}
+h3{margin:0;padding:6px 10px;background:var(--panel);color:var(--mut);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.in{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:2px;background:var(--card);color:var(--ink);font:inherit;margin:8px 10px 8px 0;max-width:calc(100% - 20px)}
+.toolbar{padding:8px 10px;background:var(--panel);border-bottom:1px solid var(--line)}
+.toolbar .in{margin:0}
+.card{background:var(--card);border-bottom:1px solid var(--line);padding:9px 12px;margin:0}
+.it{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.it small,.mut{color:var(--mut);display:block;font-size:12px}
+.low{color:var(--r);font-weight:700}
+.b{background:var(--acc);color:#fff;border:1px solid var(--acc2);border-radius:2px;padding:10px 14px;font:inherit;font-weight:600;font-size:13px}
+.sec{background:var(--card);color:var(--ink);border:1px solid var(--line)}.del{background:var(--r);border-color:#7E1E16;color:#fff}
+.st{display:flex;align-items:center;gap:6px;font-weight:700}
+.st button{width:30px;height:30px;border-radius:2px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:16px;line-height:1}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
+.grid .card{border-right:1px solid var(--line);border-bottom:0}.grid .card:last-child{border-right:0}
+.grid b{font-size:14px;display:block;margin:2px 0}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--head);border-top:1px solid var(--acc2);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;border:0;border-right:1px solid var(--acc2);background:none;color:#9FB2CC;padding:12px 0;font:inherit;font-size:12px}
+nav button:last-child{border-right:0}
+nav button.on{color:#fff;font-weight:700;background:var(--acc2)}
+#cart{position:fixed;left:0;right:0;bottom:calc(45px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;justify-content:space-between;background:var(--panel);border-top:1px solid var(--line);padding:10px 14px;max-width:640px;margin:auto;transform:translateY(100%);opacity:0;pointer-events:none;transition:transform .18s ease,opacity .18s ease}
+#cart.show{transform:translateY(0);opacity:1;pointer-events:auto}
+#t{position:fixed;left:50%;top:calc(10px + env(safe-area-inset-top,0px));transform:translateX(-50%) translateY(-12px);background:var(--head);color:#fff;padding:8px 14px;border-radius:2px;z-index:99;max-width:90vw;font-size:13px;border:1px solid var(--acc2);opacity:0;pointer-events:none;transition:transform .18s ease,opacity .18s ease}
+#t.show{transform:translateX(-50%) translateY(0);opacity:1}
+dialog{border:1px solid var(--line);border-radius:2px;padding:14px;width:min(92vw,420px);background:var(--card);color:var(--ink);opacity:0;transform:translateY(8px) scale(.98);transition:opacity .14s ease,transform .14s ease}
+dialog[open]{opacity:1;transform:translateY(0) scale(1)}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog h3{background:none;border:0;padding:0;margin:0 0 10px;color:var(--ink);font-size:14px;text-transform:none;letter-spacing:0}
+label{display:block;font-size:12px;color:var(--mut);margin-top:4px}
+.row{display:flex;gap:8px;margin-top:10px}.row .b{flex:1}
+#splash{position:fixed;inset:0;background:#003C9E;display:flex;align-items:center;justify-content:center;z-index:999;transition:opacity .25s ease}
+#splash img{width:96px;height:auto;object-fit:contain;animation:pulse 1.1s ease-in-out infinite}
+#splash.hide{opacity:0;pointer-events:none}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.07);opacity:.85}}
+</style></head>
+<body>
+<div id="splash"><img src="splash.jpg" alt=""></div>
+<header><img src="icon.png" alt=""><b>1T</b><span>Home Version 2.17.1</span></header>
+<main id="app"></main>
+<div id="cart"></div><nav></nav><div id="t"></div><dialog id="d"></dialog>
+<input type="file" id="f" accept=".json,application/json" hidden>
+<script>
+const CUR={UAH:{s:'₴',n:'Гривна'},USD:{s:'$',n:'Доллар'},EUR:{s:'€',n:'Евро'},CNY:{s:'¥',n:'Юань'}};
+const K='1t-db',E=()=>({products:[],clients:[],sales:[],rates:{UAH:1,USD:42,EUR:45,CNY:5.8}});
+function migrate(){
+  db.rates=Object.assign({UAH:1,USD:42,EUR:45,CNY:5.8},db.rates||{});
+  (db.products||[]).forEach(p=>{if(!p.cur)p.cur='UAH';if(p.note==null)p.note=''});
+  if(!db.lang)db.lang='ru';
+  if(!db.archive)db.archive=[];
+  checkArchive();
+}
+function checkArchive(){
+  const now=Date.now();
+  const before=db.archive.length;
+  db.archive=db.archive.filter(a=>!a.due||new Date(a.due+'T23:59:59').getTime()>=now);
+  if(db.archive.length!==before)try{localStorage.setItem(K,JSON.stringify(db))}catch(e){}
+}
+let db=(()=>{try{return JSON.parse(localStorage.getItem(K))||E()}catch(e){return E()}})();
+migrate();
+/* ---------- Локализация ---------- */
+const LANG_ORDER=['uk','ru','en','pl','de','fr','es','it','zh','tr'];
+const NAMES={
+  uk:{uk:'Українська',en:'Англійська',pl:'Польська',de:'Німецька',fr:'Французька',es:'Іспанська',it:'Італійська',zh:'Китайська',tr:'Турецька'},
+  ru:{uk:'Украинский',en:'Английский',pl:'Польский',de:'Немецкий',fr:'Французский',es:'Испанский',it:'Итальянский',zh:'Китайский',tr:'Турецкий'},
+  en:{uk:'Ukrainian',en:'English',pl:'Polish',de:'German',fr:'French',es:'Spanish',it:'Italian',zh:'Chinese',tr:'Turkish'},
+  pl:{uk:'Ukraiński',en:'Angielski',pl:'Polski',de:'Niemiecki',fr:'Francuski',es:'Hiszpański',it:'Włoski',zh:'Chiński',tr:'Turecki'},
+  de:{uk:'Ukrainisch',en:'Englisch',pl:'Polnisch',de:'Deutsch',fr:'Französisch',es:'Spanisch',it:'Italienisch',zh:'Chinesisch',tr:'Türkisch'},
+  fr:{uk:'Ukrainien',en:'Anglais',pl:'Polonais',de:'Allemand',fr:'Français',es:'Espagnol',it:'Italien',zh:'Chinois',tr:'Turc'},
+  es:{uk:'Ucraniano',en:'Inglés',pl:'Polaco',de:'Alemán',fr:'Francés',es:'Español',it:'Italiano',zh:'Chino',tr:'Turco'},
+  it:{uk:'Ucraino',en:'Inglese',pl:'Polacco',de:'Tedesco',fr:'Francese',es:'Spagnolo',it:'Italiano',zh:'Cinese',tr:'Turco'},
+  zh:{uk:'乌克兰语',en:'英语',pl:'波兰语',de:'德语',fr:'法语',es:'西班牙语',it:'意大利语',zh:'中文',tr:'土耳其语'},
+  tr:{uk:'Ukraynaca',en:'İngilizce',pl:'Lehçe',de:'Almanca',fr:'Fransızca',es:'İspanyolca',it:'İtalyanca',zh:'Çince',tr:'Türkçe'}
+};
+LANG_ORDER.forEach(k=>{NAMES[k]=NAMES[k]||{};NAMES[k].ru='RUSSIAN'});
+const STR={
+  ru:{nav_sale:'Касса',nav_prod:'Товары',nav_cli:'Клиенты',nav_rep:'Отчёты',nav_set:'Настройки',btn_new_product:'+ Новый товар',btn_new_client:'+ Новый клиент',search_product:'Поиск товара',search_client:'Поиск клиента',btn_checkout:'Оформить',btn_clear:'Очистить',btn_confirm:'Подтвердить',btn_cancel:'Отмена',btn_delete:'Удалить',btn_save:'Сохранить',btn_save_more:'+ Ещё',btn_export:'Выгрузить',btn_import:'Загрузить',btn_edit_rates:'Изменить курсы',h_low_stock:'Заканчивается',h_top:'Лучшие товары',h_sales:'Продажи',h_db:'База данных',h_rates:'Курсы валют',lbl_price:'Цена',lbl_currency:'Валюта',lbl_qty:'Остаток, шт',lbl_min:'Минимальный остаток (для предупреждения)',lbl_phone:'Телефон',lbl_client:'Клиент',opt_no_client:'Без клиента',lbl_product_name:'Название',lbl_client_name:'Имя',title_confirm_sale:'Подтверждение продажи',title_edit_product:'Товар',title_new_product:'Новый товар',title_edit_client:'Клиент',title_new_client:'Новый клиент',empty_products:'Товаров нет. Нажмите «Новый товар».',empty_clients:'Клиентов пока нет.',empty_search:'Ничего не найдено.',empty_sale:'Пока нет товаров. Добавьте первый на вкладке «Товары».',settings_lang_label:'Язык интерфейса',period_today:'Сегодня',period_week:'7 дней',period_all:'Всё время',nav_arch:'Архив',btn_new_archive:'+ В архив',lbl_note:'Заметка',lbl_due:'Срок (до какой даты)',btn_move:'→ Товары',empty_archive:'Архив пуст.',title_edit_archive:'Запись архива',title_new_archive:'В архив'},
+  uk:{nav_sale:'Каса',nav_prod:'Товари',nav_cli:'Клієнти',nav_rep:'Звіти',nav_set:'Налаштування',btn_new_product:'+ Новий товар',btn_new_client:'+ Новий клієнт',search_product:'Пошук товару',search_client:'Пошук клієнта',btn_checkout:'Оформити',btn_clear:'Очистити',btn_confirm:'Підтвердити',btn_cancel:'Скасувати',btn_delete:'Видалити',btn_save:'Зберегти',btn_save_more:'+ Ще',btn_export:'Вивантажити',btn_import:'Завантажити',btn_edit_rates:'Змінити курси',h_low_stock:'Закінчується',h_top:'Найкращі товари',h_sales:'Продажі',h_db:'База даних',h_rates:'Курси валют',lbl_price:'Ціна',lbl_currency:'Валюта',lbl_qty:'Залишок, шт',lbl_min:'Мінімальний залишок (для попередження)',lbl_phone:'Телефон',lbl_client:'Клієнт',opt_no_client:'Без клієнта',lbl_product_name:'Назва',lbl_client_name:'Ім’я',title_confirm_sale:'Підтвердження продажу',title_edit_product:'Товар',title_new_product:'Новий товар',title_edit_client:'Клієнт',title_new_client:'Новий клієнт',empty_products:'Товарів немає. Натисніть «Новий товар».',empty_clients:'Клієнтів поки немає.',empty_search:'Нічого не знайдено.',empty_sale:'Поки немає товарів. Додайте перший на вкладці «Товари».',settings_lang_label:'Мова інтерфейсу',period_today:'Сьогодні',period_week:'7 днів',period_all:'Весь час',nav_arch:'Архів',btn_new_archive:'+ В архів',lbl_note:'Нотатка',lbl_due:'Термін (до якої дати)',btn_move:'→ Товари',empty_archive:'Архів порожній.',title_edit_archive:'Запис архіву',title_new_archive:'В архів'},
+  en:{nav_sale:'Register',nav_prod:'Products',nav_cli:'Clients',nav_rep:'Reports',nav_set:'Settings',btn_new_product:'+ New product',btn_new_client:'+ New client',search_product:'Search product',search_client:'Search client',btn_checkout:'Checkout',btn_clear:'Clear',btn_confirm:'Confirm',btn_cancel:'Cancel',btn_delete:'Delete',btn_save:'Save',btn_save_more:'+ Add more',btn_export:'Export',btn_import:'Import',btn_edit_rates:'Edit rates',h_low_stock:'Low stock',h_top:'Top products',h_sales:'Sales',h_db:'Database',h_rates:'Exchange rates',lbl_price:'Price',lbl_currency:'Currency',lbl_qty:'Stock, pcs',lbl_min:'Minimum stock (for warning)',lbl_phone:'Phone',lbl_client:'Client',opt_no_client:'No client',lbl_product_name:'Name',lbl_client_name:'Name',title_confirm_sale:'Confirm sale',title_edit_product:'Product',title_new_product:'New product',title_edit_client:'Client',title_new_client:'New client',empty_products:'No products yet. Tap "New product".',empty_clients:'No clients yet.',empty_search:'Nothing found.',empty_sale:'No products yet. Add the first one on the "Products" tab.',settings_lang_label:'Interface language',period_today:'Today',period_week:'7 days',period_all:'All time',nav_arch:'Archive',btn_new_archive:'+ To archive',lbl_note:'Note',lbl_due:'Due date',btn_move:'→ Products',empty_archive:'Archive is empty.',title_edit_archive:'Archive item',title_new_archive:'To archive'},
+  pl:{nav_sale:'Kasa',nav_prod:'Towary',nav_cli:'Klienci',nav_rep:'Raporty',nav_set:'Ustawienia',btn_new_product:'+ Nowy towar',btn_new_client:'+ Nowy klient',search_product:'Szukaj towaru',search_client:'Szukaj klienta',btn_checkout:'Sfinalizuj',btn_clear:'Wyczyść',btn_confirm:'Potwierdź',btn_cancel:'Anuluj',btn_delete:'Usuń',btn_save:'Zapisz',btn_save_more:'+ Jeszcze',btn_export:'Eksportuj',btn_import:'Importuj',btn_edit_rates:'Zmień kursy',h_low_stock:'Kończy się',h_top:'Najlepsze towary',h_sales:'Sprzedaż',h_db:'Baza danych',h_rates:'Kursy walut',lbl_price:'Cena',lbl_currency:'Waluta',lbl_qty:'Stan, szt.',lbl_min:'Minimalny stan (ostrzeżenie)',lbl_phone:'Telefon',lbl_client:'Klient',opt_no_client:'Bez klienta',lbl_product_name:'Nazwa',lbl_client_name:'Imię',title_confirm_sale:'Potwierdzenie sprzedaży',title_edit_product:'Towar',title_new_product:'Nowy towar',title_edit_client:'Klient',title_new_client:'Nowy klient',empty_products:'Brak towarów. Naciśnij «Nowy towar».',empty_clients:'Brak klientów.',empty_search:'Nic nie znaleziono.',empty_sale:'Jeszcze nie ma towarów. Dodaj pierwszy w zakładce «Towary».',settings_lang_label:'Język interfejsu',period_today:'Dziś',period_week:'7 dni',period_all:'Cały czas',nav_arch:'Archiwum',btn_new_archive:'+ Do archiwum',lbl_note:'Notatka',lbl_due:'Termin (do jakiej daty)',btn_move:'→ Towary',empty_archive:'Archiwum jest puste.',title_edit_archive:'Wpis archiwum',title_new_archive:'Do archiwum'},
+  de:{nav_sale:'Kasse',nav_prod:'Waren',nav_cli:'Kunden',nav_rep:'Berichte',nav_set:'Einstellungen',btn_new_product:'+ Neue Ware',btn_new_client:'+ Neuer Kunde',search_product:'Ware suchen',search_client:'Kunde suchen',btn_checkout:'Abschließen',btn_clear:'Leeren',btn_confirm:'Bestätigen',btn_cancel:'Abbrechen',btn_delete:'Löschen',btn_save:'Speichern',btn_save_more:'+ Weitere',btn_export:'Exportieren',btn_import:'Importieren',btn_edit_rates:'Kurse ändern',h_low_stock:'Geht zur Neige',h_top:'Top-Waren',h_sales:'Verkäufe',h_db:'Datenbank',h_rates:'Wechselkurse',lbl_price:'Preis',lbl_currency:'Währung',lbl_qty:'Bestand, Stk.',lbl_min:'Mindestbestand (Warnung)',lbl_phone:'Telefon',lbl_client:'Kunde',opt_no_client:'Ohne Kunden',lbl_product_name:'Name',lbl_client_name:'Name',title_confirm_sale:'Verkauf bestätigen',title_edit_product:'Ware',title_new_product:'Neue Ware',title_edit_client:'Kunde',title_new_client:'Neuer Kunde',empty_products:'Noch keine Waren. Tippe auf „Neue Ware“.',empty_clients:'Noch keine Kunden.',empty_search:'Nichts gefunden.',empty_sale:'Noch keine Waren. Füge die erste im Tab „Waren“ hinzu.',settings_lang_label:'Sprache der Oberfläche',period_today:'Heute',period_week:'7 Tage',period_all:'Gesamt',nav_arch:'Archiv',btn_new_archive:'+ Ins Archiv',lbl_note:'Notiz',lbl_due:'Frist (bis wann)',btn_move:'→ Waren',empty_archive:'Archiv ist leer.',title_edit_archive:'Archiveintrag',title_new_archive:'Ins Archiv'},
+  fr:{nav_sale:'Caisse',nav_prod:'Produits',nav_cli:'Clients',nav_rep:'Rapports',nav_set:'Paramètres',btn_new_product:'+ Nouveau produit',btn_new_client:'+ Nouveau client',search_product:'Rechercher un produit',search_client:'Rechercher un client',btn_checkout:'Valider',btn_clear:'Vider',btn_confirm:'Confirmer',btn_cancel:'Annuler',btn_delete:'Supprimer',btn_save:'Enregistrer',btn_save_more:'+ Encore',btn_export:'Exporter',btn_import:'Importer',btn_edit_rates:'Modifier les taux',h_low_stock:'Stock faible',h_top:'Meilleurs produits',h_sales:'Ventes',h_db:'Base de données',h_rates:'Taux de change',lbl_price:'Prix',lbl_currency:'Devise',lbl_qty:'Stock, pcs',lbl_min:'Stock minimum (alerte)',lbl_phone:'Téléphone',lbl_client:'Client',opt_no_client:'Sans client',lbl_product_name:'Nom',lbl_client_name:'Nom',title_confirm_sale:'Confirmation de la vente',title_edit_product:'Produit',title_new_product:'Nouveau produit',title_edit_client:'Client',title_new_client:'Nouveau client',empty_products:'Aucun produit. Appuyez sur « Nouveau produit ».',empty_clients:"Aucun client pour l'instant.",empty_search:'Aucun résultat.',empty_sale:'Aucun produit pour l’instant. Ajoutez-en un dans l’onglet « Produits ».',settings_lang_label:"Langue de l'interface",period_today:"Aujourd'hui",period_week:'7 jours',period_all:'Toute la période',nav_arch:'Archive',btn_new_archive:'+ Vers l’archive',lbl_note:'Note',lbl_due:'Échéance (jusqu’à quand)',btn_move:'→ Produits',empty_archive:'L’archive est vide.',title_edit_archive:'Élément d’archive',title_new_archive:'Vers l’archive'},
+  es:{nav_sale:'Caja',nav_prod:'Productos',nav_cli:'Clientes',nav_rep:'Informes',nav_set:'Ajustes',btn_new_product:'+ Nuevo producto',btn_new_client:'+ Nuevo cliente',search_product:'Buscar producto',search_client:'Buscar cliente',btn_checkout:'Finalizar',btn_clear:'Vaciar',btn_confirm:'Confirmar',btn_cancel:'Cancelar',btn_delete:'Eliminar',btn_save:'Guardar',btn_save_more:'+ Otro',btn_export:'Exportar',btn_import:'Importar',btn_edit_rates:'Cambiar tasas',h_low_stock:'Se agota',h_top:'Productos top',h_sales:'Ventas',h_db:'Base de datos',h_rates:'Tasas de cambio',lbl_price:'Precio',lbl_currency:'Moneda',lbl_qty:'Stock, uds.',lbl_min:'Stock mínimo (aviso)',lbl_phone:'Teléfono',lbl_client:'Cliente',opt_no_client:'Sin cliente',lbl_product_name:'Nombre',lbl_client_name:'Nombre',title_confirm_sale:'Confirmar venta',title_edit_product:'Producto',title_new_product:'Nuevo producto',title_edit_client:'Cliente',title_new_client:'Nuevo cliente',empty_products:'Aún no hay productos. Pulsa «Nuevo producto».',empty_clients:'Aún no hay clientes.',empty_search:'No se encontró nada.',empty_sale:'Aún no hay productos. Añade el primero en la pestaña «Productos».',settings_lang_label:'Idioma de la interfaz',period_today:'Hoy',period_week:'7 días',period_all:'Todo el tiempo',nav_arch:'Archivo',btn_new_archive:'+ Al archivo',lbl_note:'Nota',lbl_due:'Fecha límite',btn_move:'→ Productos',empty_archive:'El archivo está vacío.',title_edit_archive:'Elemento de archivo',title_new_archive:'Al archivo'},
+  it:{nav_sale:'Cassa',nav_prod:'Prodotti',nav_cli:'Clienti',nav_rep:'Report',nav_set:'Impostazioni',btn_new_product:'+ Nuovo prodotto',btn_new_client:'+ Nuovo cliente',search_product:'Cerca prodotto',search_client:'Cerca cliente',btn_checkout:'Conferma ordine',btn_clear:'Svuota',btn_confirm:'Conferma',btn_cancel:'Annulla',btn_delete:'Elimina',btn_save:'Salva',btn_save_more:'+ Altro',btn_export:'Esporta',btn_import:'Importa',btn_edit_rates:'Modifica tassi',h_low_stock:'In esaurimento',h_top:'Prodotti migliori',h_sales:'Vendite',h_db:'Database',h_rates:'Tassi di cambio',lbl_price:'Prezzo',lbl_currency:'Valuta',lbl_qty:'Scorta, pz',lbl_min:'Scorta minima (avviso)',lbl_phone:'Telefono',lbl_client:'Cliente',opt_no_client:'Nessun cliente',lbl_product_name:'Nome',lbl_client_name:'Nome',title_confirm_sale:'Conferma vendita',title_edit_product:'Prodotto',title_new_product:'Nuovo prodotto',title_edit_client:'Cliente',title_new_client:'Nuovo cliente',empty_products:'Nessun prodotto. Tocca «Nuovo prodotto».',empty_clients:'Nessun cliente ancora.',empty_search:'Nessun risultato.',empty_sale:'Nessun prodotto ancora. Aggiungine uno nella scheda «Prodotti».',settings_lang_label:"Lingua dell'interfaccia",period_today:'Oggi',period_week:'7 giorni',period_all:'Tutto il periodo',nav_arch:'Archivio',btn_new_archive:'+ In archivio',lbl_note:'Nota',lbl_due:'Scadenza (entro quando)',btn_move:'→ Prodotti',empty_archive:'L’archivio è vuoto.',title_edit_archive:'Voce d’archivio',title_new_archive:'In archivio'},
+  zh:{nav_sale:'收银',nav_prod:'商品',nav_cli:'客户',nav_rep:'报表',nav_set:'设置',btn_new_product:'+ 新商品',btn_new_client:'+ 新客户',search_product:'搜索商品',search_client:'搜索客户',btn_checkout:'结账',btn_clear:'清空',btn_confirm:'确认',btn_cancel:'取消',btn_delete:'删除',btn_save:'保存',btn_save_more:'+ 继续添加',btn_export:'导出',btn_import:'导入',btn_edit_rates:'修改汇率',h_low_stock:'库存不足',h_top:'畅销商品',h_sales:'销售',h_db:'数据库',h_rates:'汇率',lbl_price:'价格',lbl_currency:'货币',lbl_qty:'库存数量',lbl_min:'最低库存（预警）',lbl_phone:'电话',lbl_client:'客户',opt_no_client:'无客户',lbl_product_name:'名称',lbl_client_name:'姓名',title_confirm_sale:'确认销售',title_edit_product:'商品',title_new_product:'新商品',title_edit_client:'客户',title_new_client:'新客户',empty_products:'暂无商品，点击"新商品"。',empty_clients:'暂无客户。',empty_search:'未找到。',empty_sale:'暂无商品，请在"商品"页签中添加第一个。',settings_lang_label:'界面语言',period_today:'今天',period_week:'7天',period_all:'全部',nav_arch:'归档',btn_new_archive:'+ 加入归档',lbl_note:'备注',lbl_due:'截止日期',btn_move:'→ 商品',empty_archive:'归档为空。',title_edit_archive:'归档项',title_new_archive:'加入归档'},
+  tr:{nav_sale:'Kasa',nav_prod:'Ürünler',nav_cli:'Müşteriler',nav_rep:'Raporlar',nav_set:'Ayarlar',btn_new_product:'+ Yeni ürün',btn_new_client:'+ Yeni müşteri',search_product:'Ürün ara',search_client:'Müşteri ara',btn_checkout:'Tamamla',btn_clear:'Temizle',btn_confirm:'Onayla',btn_cancel:'İptal',btn_delete:'Sil',btn_save:'Kaydet',btn_save_more:'+ Bir tane daha',btn_export:'Dışa aktar',btn_import:'İçe aktar',btn_edit_rates:'Kurları değiştir',h_low_stock:'Azalıyor',h_top:'En çok satan',h_sales:'Satışlar',h_db:'Veritabanı',h_rates:'Döviz kurları',lbl_price:'Fiyat',lbl_currency:'Para birimi',lbl_qty:'Stok, adet',lbl_min:'Minimum stok (uyarı için)',lbl_phone:'Telefon',lbl_client:'Müşteri',opt_no_client:'Müşteri yok',lbl_product_name:'Ad',lbl_client_name:'Ad',title_confirm_sale:'Satışı onayla',title_edit_product:'Ürün',title_new_product:'Yeni ürün',title_edit_client:'Müşteri',title_new_client:'Yeni müşteri',empty_products:'Henüz ürün yok. "Yeni ürün"e dokunun.',empty_clients:'Henüz müşteri yok.',empty_search:'Sonuç bulunamadı.',empty_sale:'Henüz ürün yok. "Ürünler" sekmesinden ekleyin.',settings_lang_label:'Arayüz dili',period_today:'Bugün',period_week:'7 gün',period_all:'Tüm zamanlar',nav_arch:'Arşiv',btn_new_archive:'+ Arşive ekle',lbl_note:'Not',lbl_due:'Son tarih',btn_move:'→ Ürünler',empty_archive:'Arşiv boş.',title_edit_archive:'Arşiv kaydı',title_new_archive:'Arşive ekle'}
+};
+let lang=db.lang;
+function t(k){return(STR[lang]&&STR[lang][k])||STR.ru[k]||k}
+let tab='sale',q='',cart={},repPeriod='all';
+const TABS=['sale','prod','arch','cli','rep','set'];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>(Math.round(n*100)/100).toLocaleString('ru-RU')+' ₴';
+const curMoney=(n,c)=>(Math.round(n*100)/100).toLocaleString('ru-RU')+' '+(CUR[c]?CUR[c].s:(c||'₴'));
+const rate=c=>(db.rates&&db.rates[c])||1;
+const priceUAH=p=>p.price*rate(p.cur||'UAH');
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const fmt=ts=>new Date(ts).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+function save(){try{localStorage.setItem(K,JSON.stringify(db))}catch(e){toast('Не удалось сохранить: память браузера недоступна')}cloudSave()}
+/* ---------- Синхронизация прогресса в Телеграм-боте ---------- */
+/* Внутри мини-приложения бота Телеграм сам даёт user_id текущего человека —
+   под этим же id и хранится его прогресс. Видно и ожидаемо, как в любой игре с сохранением. */
+const TG=window.Telegram&&window.Telegram.WebApp;
+const TG_ID=TG&&TG.initDataUnsafe&&TG.initDataUnsafe.user&&TG.initDataUnsafe.user.id;
+const FB_URL='https://ВАШ-ПРОЕКТ-default-rtdb.firebaseio.com'; // замени на адрес своей базы из Firebase
+async function cloudLoad(){
+  if(!TG_ID)return; // открыто не через бота — работаем только локально
+  try{const r=await fetch(FB_URL+'/users/'+TG_ID+'.json');const d=await r.json();if(d){db=d;migrate()}}catch(e){}
+}
+function cloudSave(){
+  if(!TG_ID)return;
+  fetch(FB_URL+'/users/'+TG_ID+'.json',{method:'PUT',body:JSON.stringify(db)}).catch(()=>{});
+}
+function toast(m){const t=$('#t');t.textContent=m;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('show'),2600)}
+function dlg(title,body,ok,onOk,onDel,extra){
+  const d=$('#d');
+  d.innerHTML=`<form><h3 style="margin-top:0">${title}</h3>${body}<div class="row"><button type="button" class="b sec" data-c>${t('btn_cancel')}</button>${onDel?`<button type="button" class="b del" data-x>${t('btn_delete')}</button>`:''}${extra?`<button type="button" class="b sec" data-e>${extra.label}</button>`:''}<button class="b">${ok}</button></div></form>`;
+  const f=d.querySelector('form');
+  f.onsubmit=e=>{e.preventDefault();if(onOk(new FormData(f))!==false)d.close()};
+  f.querySelector('[data-c]').onclick=()=>d.close();
+  if(onDel)f.querySelector('[data-x]').onclick=()=>{if(confirm(t('btn_delete')+'?')){onDel();d.close()}};
+  if(extra)f.querySelector('[data-e]').onclick=()=>extra.run(new FormData(f),f);
+  d.showModal();
+  const first=f.querySelector('input,select');
+  if(first)setTimeout(()=>{first.focus();if(first.select)first.select()},50);
+}
+/* ---------- Касса ---------- */
+const items=()=>Object.entries(cart).map(([id,n])=>({p:db.products.find(x=>x.id===id),n})).filter(x=>x.p&&x.n>0);
+const total=()=>items().reduce((a,x)=>a+priceUAH(x.p)*x.n,0);
+const match=p=>p.name.toLowerCase().includes(q.trim().toLowerCase());
+function saleList(){
+  if(!db.products.length)return`<div class="card mut">${t('empty_sale')}</div>`;
+  const l=db.products.filter(match);
+  if(!l.length)return'<div class="card mut">Ничего не найдено.</div>';
+  return l.map(p=>`<div class="card it"><div><b>${esc(p.name)}</b><small>${curMoney(p.price,p.cur)}${p.cur&&p.cur!=='UAH'?' ≈ '+money(priceUAH(p)):''} · остаток ${p.qty}</small></div><div class="st"><button data-dec="${p.id}">−</button><button data-qty="${p.id}" class="sec" style="min-width:30px;padding:4px 6px;border-radius:2px;font-weight:700">${cart[p.id]||0}</button><button data-inc="${p.id}">+</button></div></div>`).join('');
+}
+function qtyForm(id){
+  const p=db.products.find(x=>x.id===id);if(!p)return;
+  dlg(esc(p.name),`<p class="mut" style="margin:0 0 8px">${t('lbl_qty')}: ${p.qty}</p><label>${t('lbl_qty')}<input class="in" name="n" type="number" step="1" min="0" max="${p.qty}" inputmode="numeric" required value="${cart[id]||0}"></label>`,t('btn_confirm'),fd=>{
+    let n=Math.floor(+fd.get('n'))||0;
+    if(n<0)n=0;
+    if(n>p.qty){n=p.qty}
+    if(n>0)cart[id]=n;else delete cart[id];
+    $('#list').innerHTML=saleList();cartBar();
+  });
+}
+function vSale(){return`<div class="toolbar"><input class="in" id="q" placeholder="${t('search_product')}" value="${esc(q)}"></div><div id="list">${saleList()}</div>`}
+function cartBar(){
+  const n=items(),el=$('#cart');
+  if(tab!=='sale'||!n.length){el.classList.remove('show');return}
+  el.innerHTML=`<div><b>${money(total())}</b><small class="mut">${n.length}</small></div><div class="row" style="margin:0;gap:6px"><button class="b sec" style="width:auto;padding:10px 12px" data-clr>${t('btn_clear')}</button><button class="b" style="width:auto" data-co>${t('btn_checkout')}</button></div>`;
+  requestAnimationFrame(()=>el.classList.add('show'));
+}
+function checkout(){
+  const it=items(),sum=total();
+  dlg(t('title_confirm_sale'),`${it.map(x=>`<div class="it"><span>${esc(x.p.name)} × ${x.n}</span><b>${money(priceUAH(x.p)*x.n)}</b></div>`).join('')}<p><b>${money(sum)}</b></p><label>${t('lbl_client')}<select class="in" name="cl"><option value="">${t('opt_no_client')}</option>${db.clients.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select></label>`,t('btn_confirm'),fd=>{
+    const bad=it.find(x=>x.n>x.p.qty);
+    if(bad){toast(t('h_low_stock')+': '+bad.p.name);return false}
+    it.forEach(x=>x.p.qty-=x.n);
+    db.sales.push({id:uid(),ts:Date.now(),cl:fd.get('cl'),items:it.map(x=>({pid:x.p.id,n:x.p.name,pr:priceUAH(x.p),q:x.n})),total:sum});
+    cart={};save();go();hap();toast(t('btn_confirm')+' ✓');
+  });
+}
+/* ---------- Товары ---------- */
+function prodList(){
+  const l=db.products.filter(match);
+  if(!l.length)return`<div class="card mut">${q?t('empty_search'):t('empty_products')}</div>`;
+  return l.map(p=>`<div class="card it" data-ep="${p.id}"><div><b>${esc(p.name)}</b><small>${curMoney(p.price,p.cur)}${p.cur&&p.cur!=='UAH'?' · ≈'+money(priceUAH(p)):''}</small>${p.note?`<small class="mut">${esc(p.note)}</small>`:''}</div><div class="it" style="gap:8px"><span class="${p.qty<=p.min?'low':''}">${p.qty} шт</span><button data-stock="${p.id}" class="sec" style="padding:5px 8px;font-size:12px">± приход</button></div></div>`).join('');
+}
+function vProd(){return`<div class="toolbar row"><button class="b" style="width:auto" data-add="p">${t('btn_new_product')}</button></div><div class="toolbar"><input class="in" id="q" placeholder="${t('search_product')}" value="${esc(q)}"></div><div id="list">${prodList()}</div>`}
+function prodForm(id){
+  const ex=db.products.find(x=>x.id===id);
+  const p0=ex||{name:'',price:'',cur:'UAH',qty:'',min:'',note:''};
+  const body=`<label>${t('lbl_product_name')}<input class="in" name="name" required value="${esc(p0.name)}"></label><div class="row" style="margin:0"><label style="flex:2">${t('lbl_price')}<input class="in" name="price" type="number" step="0.01" min="0" inputmode="decimal" required value="${p0.price}"></label><label style="flex:1">${t('lbl_currency')}<select class="in" name="cur">${Object.entries(CUR).map(([k,v])=>`<option value="${k}" ${(p0.cur||'UAH')===k?'selected':''}>${v.s} ${k}</option>`).join('')}</select></label></div><label>${t('lbl_qty')}<input class="in" name="qty" type="number" step="1" min="0" inputmode="numeric" required value="${p0.qty}"></label><label>${t('lbl_min')}<input class="in" name="min" type="number" step="1" min="0" inputmode="numeric" value="${p0.min}"></label><label>${t('lbl_note')}<input class="in" name="note" value="${esc(p0.note||'')}"></label>`;
+  const read=fd=>({name:fd.get('name').trim(),price:+fd.get('price'),cur:fd.get('cur')||'UAH',qty:+fd.get('qty'),min:+fd.get('min')||0,note:fd.get('note').trim()});
+  const dup=name=>db.products.some(x=>x!==ex&&x.name.toLowerCase()===name.toLowerCase());
+  dlg(ex?t('title_edit_product'):t('title_new_product'),body,t('btn_save'),fd=>{
+    const o=read(fd);
+    if(!o.name){toast(t('lbl_product_name')+'?');return false}
+    if(dup(o.name)&&!confirm(t('title_new_product')+'?'))return false;
+    if(ex)Object.assign(ex,o);else db.products.push({id:uid(),...o});
+    save();go();
+  },ex?()=>{db.products=db.products.filter(x=>x.id!==id);delete cart[id];save();go()}:null,
+  ex?null:{label:t('btn_save_more'),run:(fd,f)=>{
+    const o=read(fd);
+    if(!o.name){toast(t('lbl_product_name')+'?');return}
+    if(dup(o.name)&&!confirm(t('title_new_product')+'?'))return;
+    db.products.push({id:uid(),...o});
+    save();go();hap();toast(o.name+' ✓');
+    f.reset();const nm=f.querySelector('[name=name]');if(nm)nm.focus();
+  }});
+}
+function fmtDate(iso){if(!iso)return'';const[y,m,d]=iso.split('-');return`${d}.${m}.${y}`}
+function archList(){
+  const l=db.archive.filter(match);
+  if(!l.length)return`<div class="card mut">${q?t('empty_search'):t('empty_archive')}</div>`;
+  return l.map(a=>`<div class="card" data-ea="${a.id}"><div class="it"><b>${esc(a.name)}</b><span class="mut">${fmtDate(a.due)}</span></div><div class="it" style="margin-top:4px"><small class="mut">${esc(a.note||'')}</small><button data-mv="${a.id}" class="sec" style="padding:5px 8px;font-size:12px">${t('btn_move')}</button></div></div>`).join('');
+}
+function vArch(){return`<div class="toolbar row"><button class="b" style="width:auto" data-add="a">${t('btn_new_archive')}</button></div><div class="toolbar"><input class="in" id="q" placeholder="${t('search_product')}" value="${esc(q)}"></div><div id="list">${archList()}</div>`}
+function archForm(id){
+  const ex=db.archive.find(x=>x.id===id);
+  const a0=ex||{name:'',price:'',cur:'UAH',qty:'',min:'',note:'',due:''};
+  const body=`<label>${t('lbl_product_name')}<input class="in" name="name" required value="${esc(a0.name)}"></label><div class="row" style="margin:0"><label style="flex:2">${t('lbl_price')}<input class="in" name="price" type="number" step="0.01" min="0" inputmode="decimal" value="${a0.price}"></label><label style="flex:1">${t('lbl_currency')}<select class="in" name="cur">${Object.entries(CUR).map(([k,v])=>`<option value="${k}" ${(a0.cur||'UAH')===k?'selected':''}>${v.s} ${k}</option>`).join('')}</select></label></div><label>${t('lbl_qty')}<input class="in" name="qty" type="number" step="1" min="0" inputmode="numeric" value="${a0.qty}"></label><label>${t('lbl_min')}<input class="in" name="min" type="number" step="1" min="0" inputmode="numeric" value="${a0.min}"></label><label>${t('lbl_note')}<input class="in" name="note" value="${esc(a0.note||'')}"></label><label>${t('lbl_due')}<input class="in" name="due" type="date" value="${esc(a0.due||'')}"></label>`;
+  const read=fd=>({name:fd.get('name').trim(),price:+fd.get('price')||0,cur:fd.get('cur')||'UAH',qty:+fd.get('qty')||0,min:+fd.get('min')||0,note:fd.get('note').trim(),due:fd.get('due')||''});
+  dlg(ex?t('title_edit_archive'):t('title_new_archive'),body,t('btn_save'),fd=>{
+    const o=read(fd);
+    if(!o.name){toast(t('lbl_product_name')+'?');return false}
+    if(ex)Object.assign(ex,o);else db.archive.push({id:uid(),...o});
+    save();go();
+  },ex?()=>{db.archive=db.archive.filter(x=>x.id!==id);save();go()}:null,
+  ex?null:{label:t('btn_save_more'),run:(fd,f)=>{
+    const o=read(fd);
+    if(!o.name){toast(t('lbl_product_name')+'?');return}
+    db.archive.push({id:uid(),...o});
+    save();go();hap();toast(o.name+' ✓');
+    f.reset();const nm=f.querySelector('[name=name]');if(nm)nm.focus();
+  }});
+}
+function moveToProduct(id){
+  const a=db.archive.find(x=>x.id===id);if(!a)return;
+  db.products.push({id:uid(),name:a.name,price:a.price||0,cur:a.cur||'UAH',qty:a.qty||0,min:a.min||0,note:a.note||''});
+  db.archive=db.archive.filter(x=>x.id!==id);
+  save();go();hap();toast(a.name+' ✓');
+}
+function stockForm(id){
+  const p=db.products.find(x=>x.id===id);if(!p)return;
+  dlg(esc(p.name),`<p class="mut" style="margin:0 0 8px">${t('lbl_qty')}: ${p.qty}</p><label>+/−<input class="in" name="d" type="number" step="1" inputmode="numeric" required placeholder="10 / -2"></label>`,t('btn_confirm'),fd=>{
+    const d=Math.trunc(+fd.get('d'));
+    if(!d){return false}
+    if(p.qty+d<0){return false}
+    p.qty+=d;save();go();hap();toast(p.name+' → '+p.qty);
+  });
+}
+/* ---------- Клиенты ---------- */
+const spent=id=>db.sales.filter(s=>s.cl===id).reduce((a,s)=>a+s.total,0);
+function cliList(){
+  const l=db.clients.filter(match);
+  if(!l.length)return`<div class="card mut">${q?t('empty_search'):t('empty_clients')}</div>`;
+  return l.map(c=>`<div class="card it" data-ec="${c.id}"><div><b>${esc(c.name)}</b><small>${esc(c.phone||'без телефона')}</small></div><div>${money(spent(c.id))}</div></div>`).join('');
+}
+function vCli(){return`<div class="toolbar row"><button class="b" style="width:auto" data-add="c">${t('btn_new_client')}</button></div><div class="toolbar"><input class="in" id="q" placeholder="${t('search_client')}" value="${esc(q)}"></div><div id="list">${cliList()}</div>`}
+const CODES=[['+380','Украина'],['+48','Польша'],['+49','Германия'],['+420','Чехия'],['+421','Словакия'],['+1','США/Канада'],['+44','Великобритания'],['+39','Италия'],['+34','Испания'],['+33','Франция'],['+31','Нидерланды'],['+32','Бельгия'],['+43','Австрия'],['+41','Швейцария'],['+351','Португалия'],['+353','Ирландия'],['+46','Швеция'],['+47','Норвегия'],['+45','Дания'],['+358','Финляндия'],['+30','Греция'],['+40','Румыния'],['+359','Болгария'],['+36','Венгрия'],['+385','Хорватия'],['+386','Словения'],['+381','Сербия'],['+370','Литва'],['+371','Латвия'],['+372','Эстония'],['+373','Молдова'],['+375','Беларусь'],['+995','Грузия'],['+374','Армения'],['+994','Азербайджан'],['+90','Турция'],['+972','Израиль'],['+971','ОАЭ'],['+966','Саудовская Аравия'],['+86','Китай'],['+81','Япония'],['+82','Южная Корея'],['+91','Индия'],['+61','Австралия'],['+55','Бразилия'],['+52','Мексика'],['+27','ЮАР']];
+function splitPhone(full){
+  full=(full||'').trim();
+  for(const[c]of CODES)if(full.startsWith(c))return{code:c,num:full.slice(c.length).replace(/\D/g,'')};
+  return{code:'+380',num:full.replace(/\D/g,'')};
+}
+function cliForm(id){
+  const ex=db.clients.find(x=>x.id===id),c=ex||{name:'',phone:''};
+  const ph=splitPhone(c.phone);
+  dlg(ex?t('title_edit_client'):t('title_new_client'),`<label>${t('lbl_client_name')}<input class="in" name="name" required value="${esc(c.name)}"></label><label>${t('lbl_phone')}</label><div class="row" style="margin:4px 0 10px"><select class="in" name="code" style="flex:0 0 128px;margin:0">${CODES.map(([c2,n])=>`<option value="${c2}" ${ph.code===c2?'selected':''}>${c2} ${n}</option>`).join('')}</select><input class="in" name="phone" type="tel" inputmode="numeric" style="margin:0" value="${esc(ph.num)}"></div>`,t('btn_save'),fd=>{
+    const digits=fd.get('phone').trim().replace(/\D/g,'');
+    const o={name:fd.get('name').trim(),phone:digits?fd.get('code')+digits:''};
+    if(ex)Object.assign(ex,o);else db.clients.push({id:uid(),...o});
+    save();go();
+  },ex?()=>{db.clients=db.clients.filter(x=>x.id!==id);save();go()}:null);
+}
+/* ---------- Отчёты ---------- */
+function sum(from){const s=db.sales.filter(x=>x.ts>=from);return{n:s.length,t:s.reduce((a,x)=>a+x.total,0)}}
+function vRep(){
+  const d=new Date();d.setHours(0,0,0,0);
+  const ranges={today:d.getTime(),week:d.getTime()-6*864e5,all:0};
+  const A=sum(ranges.today),B=sum(ranges.week),C=sum(ranges.all);
+  const top={};db.sales.forEach(s=>s.items.forEach(i=>top[i.n]=(top[i.n]||0)+i.q));
+  const tp=Object.entries(top).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const low=db.products.filter(p=>p.qty<=p.min);
+  const list=db.sales.filter(s=>s.ts>=ranges[repPeriod]).slice(-15).reverse();
+  const box=(key,n,x)=>`<div class="card" data-rep="${key}" style="cursor:pointer${repPeriod===key?';background:var(--panel)':''}"><span class="mut">${n}</span><b>${money(x.t)}</b><span class="mut">${x.n}</span></div>`;
+  return`<div class="grid">${box('today',t('period_today'),A)}${box('week',t('period_week'),B)}${box('all',t('period_all'),C)}</div>
+  <h3>${t('h_low_stock')}</h3>${low.length?low.map(p=>`<div class="card it"><span>${esc(p.name)}</span><b class="low">${p.qty}</b></div>`).join(''):`<div class="card mut">${t('empty_search')}</div>`}
+  <h3>${t('h_top')}</h3>${tp.length?tp.map(([n,q])=>`<div class="card it"><span>${esc(n)}</span><b>${q}</b></div>`).join(''):`<div class="card mut">${t('empty_search')}</div>`}
+  <h3>${t('h_sales')} — ${{today:t('period_today'),week:t('period_week'),all:t('period_all')}[repPeriod]}</h3>${list.length?list.map(s=>`<div class="card it"><div><b>${money(s.total)}</b><small>${fmt(s.ts)}${s.cl?' · '+esc((db.clients.find(c=>c.id===s.cl)||{}).name||''):''}</small></div><span class="mut">${s.items.reduce((a,i)=>a+i.q,0)}</span></div>`).join(''):`<div class="card mut">${t('empty_search')}</div>`}
+  <h3>${t('h_rates')}</h3><div class="card"><div class="row" style="flex-wrap:wrap">${['USD','EUR','CNY'].map(c=>`<span class="mut" style="flex:1 1 auto">${CUR[c].s} 1 ${c} = ${db.rates[c]} ₴</span>`).join('')}</div><div class="row"><button class="b sec" style="width:100%" data-rates>${t('btn_edit_rates')}</button></div></div>
+  <h3>${t('h_db')}</h3><div class="card"><div class="row"><button class="b" data-exp>${t('btn_export')}</button><button class="b sec" data-imp>${t('btn_import')}</button></div></div>`;
+}
+function ratesForm(){
+  dlg(t('h_rates'),`${['USD','EUR','CNY'].map(c=>`<label>${CUR[c].n} (${CUR[c].s})<input class="in" name="${c}" type="number" step="0.01" min="0.01" inputmode="decimal" required value="${db.rates[c]}"></label>`).join('')}`,t('btn_save'),fd=>{
+    ['USD','EUR','CNY'].forEach(c=>{const v=+fd.get(c);if(v>0)db.rates[c]=v});
+    save();go();
+  });
+}
+function vSet(){
+  const names=NAMES[lang]||NAMES.ru;
+  return `<h3>${t('settings_lang_label')}</h3>${LANG_ORDER.map(c=>`<div class="card it" data-lang="${c}" style="cursor:pointer${lang===c?';background:var(--panel)':''}"><span>${names[c]}</span>${lang===c?'<b>✓</b>':''}</div>`).join('')}`;
+}
+function exportDb(){
+  const b=new Blob([JSON.stringify(db)],{type:'application/json'}),a=document.createElement('a');
+  a.href=URL.createObjectURL(b);a.download='1T-база-'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+}
+$('#f').onchange=e=>{
+  const file=e.target.files[0];e.target.value='';if(!file)return;
+  file.text().then(t=>{
+    const o=JSON.parse(t);
+    if(!Array.isArray(o.products)||!Array.isArray(o.clients)||!Array.isArray(o.sales))throw 0;
+    if(!confirm('Заменить текущую базу данными из файла?'))return;
+    db=o;migrate();cart={};save();go();toast('База загружена');
+  }).catch(()=>toast('Файл не похож на базу 1T'));
+};
+/* ---------- Общее ---------- */
+function go(fade){
+  const app=$('#app');
+  const render=()=>{
+    $('nav').innerHTML=TABS.map(k=>`<button data-tab="${k}" class="${k===tab?'on':''}">${t('nav_'+k)}</button>`).join('');
+    app.innerHTML={sale:vSale,prod:vProd,arch:vArch,cli:vCli,rep:vRep,set:vSet}[tab]();
+    cartBar();
+    if(fade)requestAnimationFrame(()=>app.classList.remove('f'));
+  };
+  if(fade){app.classList.add('f');setTimeout(render,110)}else render();
+}
+function hap(){try{TG&&TG.HapticFeedback&&TG.HapticFeedback.impactOccurred('light')}catch(e){}}
+document.addEventListener('input',e=>{
+  if(e.target.id!=='q')return;
+  q=e.target.value;
+  const r={sale:saleList,prod:prodList,arch:archList,cli:cliList}[tab];
+  if(r)$('#list').innerHTML=r();
+});
+document.addEventListener('click',e=>{
+  const g=k=>{const el=e.target.closest('['+k+']');return el&&el.getAttribute(k)};
+  let v;
+  if(v=g('data-tab')){if(v!==tab){tab=v;q='';go(true);window.scrollTo(0,0)}}
+  else if(v=g('data-inc')){const p=db.products.find(x=>x.id===v);if((cart[v]||0)<p.qty){cart[v]=(cart[v]||0)+1;hap()}else toast(t('h_low_stock'));$('#list').innerHTML=saleList();cartBar()}
+  else if(v=g('data-dec')){if(cart[v]){cart[v]--;hap()}$('#list').innerHTML=saleList();cartBar()}
+  else if(v=g('data-qty'))qtyForm(v);
+  else if(g('data-clr')!==null){cart={};$('#list').innerHTML=saleList();cartBar()}
+  else if(g('data-co')!==null)checkout();
+  else if(v=g('data-stock'))stockForm(v);
+  else if(v=g('data-ep'))prodForm(v);
+  else if(v=g('data-ec'))cliForm(v);
+  else if(v=g('data-add'))v==='p'?prodForm():v==='a'?archForm():cliForm();
+  else if(v=g('data-mv'))moveToProduct(v);
+  else if(v=g('data-ea'))archForm(v);
+  else if(v=g('data-rep')){if(v!==repPeriod){repPeriod=v;go(true)}}
+  else if(g('data-exp')!==null)exportDb();
+  else if(g('data-imp')!==null)$('#f').click();
+  else if(g('data-rates')!==null)ratesForm();
+  else if(v=g('data-lang')){if(v!==lang){lang=v;db.lang=v;save();go(true)}}
+});
+if(TG){TG.ready();TG.expand()}
+const splashStart=Date.now();
+function hideSplash(){
+  const el=$('#splash');if(!el)return;
+  const wait=Math.max(0,300-(Date.now()-splashStart));
+  setTimeout(()=>{el.classList.add('hide');setTimeout(()=>el.remove(),260)},wait);
+}
+(async()=>{await cloudLoad();go();hideSplash()})();
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>
