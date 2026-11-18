@@ -19,5 +19,5 @@
 1. Open index.html in a modern web browser or deploy the directory to a local web server instance.
 Contributing
 Contributions, architectural proposals, and bug reports are welcome. Please submit pull requests or open issues via the GitHub repository interface.
-License
+2. License
 This project is distributed under the terms of the GNU Affero General Public License v3.0 (AGPL-3.0). See the LICENSE file for details.
