@@ -21,3 +21,4 @@ Contributing
 Contributions, architectural proposals, and bug reports are welcome. Please submit pull requests or open issues via the GitHub repository interface.
 2. License
 This project is distributed under the terms of the GNU Affero General Public License v3.0 (AGPL-3.0). See the LICENSE file for details.
+3. Link 🔗 https://1t-accounting-department.github.io/1T-Home-version/
